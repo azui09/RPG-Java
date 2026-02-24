@@ -14,9 +14,6 @@ class Arma {
 
     }
 
-    void exibirInfo() {
-        System.out.println("Arma: " + nome + " | Dano: " + dano + " | Tipo: " + tipo);
-    }
 }
 
 class Inventario {
@@ -41,9 +38,10 @@ class Inventario {
     }
 
     void listarArmas() {
-        System.out.println("===Inventario===");
+        System.out.println("=== Inventario ===");
         for(int i = 0; i < totalArmas; i++) {
-            armas[i].exibirInfo();
+            System.out.printf("%d - %s | Dano: %d | tipo: %s\n",
+                    i + 1, armas[i].nome, armas[i].dano, armas[i].tipo);
         }
     }
 }
@@ -79,14 +77,15 @@ class Jogador {
         if(nome.equals(alvo.nome)) {
             System.out.printf("\n%s atacou a si mesmo usando %s, causando %d de dano",
                     nome, armaEquipada.nome, armaEquipada.dano);
+        } else {
+            System.out.printf("\n%s atacou %s com %s, causando %d de dano",
+                    nome, alvo.nome, armaEquipada.nome, armaEquipada.dano);
         }
-        System.out.printf("\n%s atacou %s com %s, causando %d de dano",
-                nome, alvo.nome, armaEquipada.nome, armaEquipada.dano);
         if(alvo.vida < 0) {
             alvo.vida = 0;
         }
         if(alvo.vida == 0) {
-            System.out.printf("%s foi derrotado por %s", alvo.nome, nome);
+            System.out.printf("\n%s foi derrotado por %s", alvo.nome, nome);
             alvo.estaVivo = false;
         } else {
             System.out.printf("\nVida de %s: %d", alvo.nome, alvo.vida);
@@ -97,9 +96,9 @@ class Jogador {
         System.out.printf("\nJogador: %s", nome);
         System.out.printf("\nVida: %d | Nivel: %d", vida, nivel);
         if(armaEquipada != null) {
-            System.out.printf("\nArma equipada: %s", armaEquipada.nome);
+            System.out.printf("\nArma equipada: %s\n", armaEquipada.nome);
         } else {
-            System.out.printf("\nNenhuma arma equipada");
+            System.out.print("\nNenhuma arma equipada\n");
         }
         inventario.listarArmas();
     }
@@ -154,9 +153,9 @@ public class TesteDeClasses {
         }
 
         static void listarJogadores(ArrayList<Jogador> jogadores) {
-            System.out.printf("\n===Jogadores===");
+            System.out.print("\n=== Jogadores ===");
             for(int i = 0; i < jogadores.size(); i++) {
-                System.out.printf("\n%d - %s (vida: %d)",
+                System.out.printf("\n%d - %s (vida: %d)\n",
                         i + 1, jogadores.get(i).nome, jogadores.get(i).vida);
             }
         }
@@ -209,7 +208,7 @@ public class TesteDeClasses {
             Jogador jogador = jogadores.get(indice);
 
             if(jogador.inventario.totalArmas == 0) {
-                System.out.println("O jogador nao possui nenhuma arma");
+                System.out.println("O jogador "+ jogador.nome + " nao possui nenhuma arma");
                 return;
             }
 
@@ -262,14 +261,14 @@ public class TesteDeClasses {
 
                 int indiceAtacante = random.nextInt(vivos.size());
                 Jogador atacante = vivos.get(indiceAtacante);
-                System.out.printf("\nÉ a vez de %s atacar", atacante.nome);
+                System.out.printf("\nÉ a vez de %s atacar\n", atacante.nome);
 
                 System.out.println("Escolha o seu alvo: ");
                 for(int i = 0; i < vivos.size(); i++) {
                     System.out.printf("\n%d - %s (vida: %d)", i + 1, vivos.get(i).nome, vivos.get(i).vida);
                 }
 
-                System.out.println("\nAlvo (numero): ");
+                System.out.print("\nAlvo (numero): ");
                 int escolha = sa.nextInt() - 1;
                 sa.nextLine();
 
@@ -283,12 +282,12 @@ public class TesteDeClasses {
 
                 if(!alvo.estaVivo) {
                     vivos.remove(alvo);
-                    System.out.printf("O jogador %s foi removido da batalha", alvo.nome);
+                    System.out.printf("\nO jogador %s foi removido da batalha", alvo.nome);
                 }
                 turno++;
             }
-            System.out.println("\n=== Fim de batalha ===");
+            System.out.print("\n\n=== Fim de batalha ===");
             System.out.printf("\nVencedor: %s | vida: %d | arma equipada: %s",
-                    vivos.getFirst().nome, vivos.getFirst().vida, vivos.getFirst().armaEquipada);
+                    vivos.getFirst().nome, vivos.getFirst().vida, vivos.getFirst().armaEquipada.nome);
         }
 }
